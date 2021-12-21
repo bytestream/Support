@@ -14,7 +14,7 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/bsd
  */
-class Horde_Support_ConsistentHashTest extends PHPUnit_Framework_TestCase
+class Horde_Support_ConsistentHashTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddUpdatesCount()
     {
@@ -70,8 +70,8 @@ class Horde_Support_ConsistentHashTest extends PHPUnit_Framework_TestCase
 
     public function testRemoveThrowsOnNonexistentNode()
     {
+        $this->expectException(InvalidArgumentException::class);
         $h = new Horde_Support_ConsistentHash;
-        $this->setExpectedException('InvalidArgumentException');
         $h->remove('a');
     }
 
@@ -152,7 +152,7 @@ class Horde_Support_ConsistentHashTest extends PHPUnit_Framework_TestCase
         $h = new Horde_Support_ConsistentHash(range(1, 10));
         $nodes = $h->getNodes('r', 2);
 
-        $this->assertInternalType('array', $nodes);
+        $this->assertIsArray($nodes);
         $this->assertEquals(count($nodes), 2);
         $this->assertNotEquals($nodes[0], $nodes[1]);
     }
@@ -232,4 +232,32 @@ class Horde_Support_ConsistentHashTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($h->get('key'), $nodes[($testindex + 2) % 10]);
     }
 
+    private function readAttribute(object $object, string $attributeName)
+    {
+        $reflector = new \ReflectionObject($object);
+
+        do {
+            try {
+                $attribute = $reflector->getProperty($attributeName);
+
+                if (!$attribute || $attribute->isPublic()) {
+                    return $object->$attributeName;
+                }
+
+                $attribute->setAccessible(true);
+
+                try {
+                    return $attribute->getValue($object);
+                } finally {
+                    $attribute->setAccessible(false);
+                }
+            } catch (\ReflectionException $e) {
+                // do nothing
+            }
+        } while ($reflector = $reflector->getParentClass());
+
+        throw new \Exception(
+            sprintf('Attribute "%s" not found in object.', $attributeName)
+        );
+    }
 }

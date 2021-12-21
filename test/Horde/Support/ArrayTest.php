@@ -14,7 +14,7 @@
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/bsd
  */
-class Horde_Support_ArrayTest extends PHPUnit_Framework_TestCase
+class Horde_Support_ArrayTest extends \PHPUnit\Framework\TestCase
 {
     public function testImplementsArrayAccess()
     {
