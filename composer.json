@@ -1,5 +1,5 @@
 {
-    "name": "bytstream/horde-support",
+    "name": "bytestream/horde-support",
     "description": "Horde Supporting library",
     "type": "library",
     "homepage": "https://www.horde.org/libraries/Horde_Support",
