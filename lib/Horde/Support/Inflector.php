@@ -118,6 +118,8 @@ class Horde_Support_Inflector
         'swine',
     );
 
+    private array $_uncountables_keys = [];
+
     /**
      * Constructor.
      *
