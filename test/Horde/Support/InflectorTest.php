@@ -37,6 +37,8 @@ class Horde_Support_InflectorTest extends \PHPUnit\Framework\TestCase
         'mouse' => 'mice',
     );
 
+    private Horde_Support_Inflector $inflector;
+
     public function setUp(): void
     {
         parent::setUp();
